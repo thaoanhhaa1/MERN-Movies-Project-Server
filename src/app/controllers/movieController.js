@@ -40,4 +40,14 @@ module.exports = {
         );
         res.json(results.data);
     },
+
+    // [GET] /movie/similar?id=:id
+    similar: async (req, res, next) => {
+        const id = req.query.id;
+
+        const results = await axios.get(
+            `https://api.themoviedb.org/3/movie/${id}/similar?api_key=25430d89c638452d8bbe44f5414bf115`,
+        );
+        res.json(results.data);
+    },
 };
