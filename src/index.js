@@ -5,7 +5,7 @@ const db = require('./config/db');
 const route = require('./route');
 const errorMiddleware = require('./app/Middlewares/errorMiddleware');
 
-const port = 5000;
+const port = process.env.PORT || 5000;
 const app = express();
 
 // db.connect();
