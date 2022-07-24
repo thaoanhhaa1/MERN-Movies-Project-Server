@@ -10,7 +10,7 @@ module.exports = {
     search: async (req, res, next) => {
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/search/movie?api_key=25430d89c638452d8bbe44f5414bf115&query=${req.query.query}`,
+                `https://api.themoviedb.org/3/search/movie?api_key=${process.env.THE_MOVIE_DB_API_KEY}&query=${req.query.query}`,
             );
             res.json(results.data);
         } catch (error) {
@@ -22,7 +22,7 @@ module.exports = {
     banner: async (req, res, next) => {
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/movie/upcoming?api_key=25430d89c638452d8bbe44f5414bf115`,
+                `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
             );
             res.json(results.data);
         } catch (error) {
@@ -34,7 +34,7 @@ module.exports = {
     movies: async (req, res, next) => {
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/movie/${req.params.slug}?api_key=25430d89c638452d8bbe44f5414bf115`,
+                `https://api.themoviedb.org/3/movie/${req.params.slug}?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
             );
             res.json(results.data);
         } catch (error) {

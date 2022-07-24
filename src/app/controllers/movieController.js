@@ -7,7 +7,7 @@ module.exports = {
 
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/movie/${id}?api_key=25430d89c638452d8bbe44f5414bf115`,
+                `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
             );
             res.json(results.data);
         } catch (error) {
@@ -21,7 +21,7 @@ module.exports = {
 
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/movie/${id}/videos?api_key=25430d89c638452d8bbe44f5414bf115`,
+                `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
             );
             res.json(results.data);
         } catch (error) {
@@ -35,7 +35,7 @@ module.exports = {
 
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/movie/${id}/credits?api_key=25430d89c638452d8bbe44f5414bf115`,
+                `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
             );
             res.json(results.data);
         } catch (error) {
@@ -49,7 +49,7 @@ module.exports = {
 
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=25430d89c638452d8bbe44f5414bf115`,
+                `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
             );
             res.json(results.data);
         } catch (error) {
@@ -62,7 +62,7 @@ module.exports = {
         const id = req.query.id;
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/movie/${id}/similar?api_key=25430d89c638452d8bbe44f5414bf115`,
+                `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
             );
             res.json(results.data);
         } catch (error) {
