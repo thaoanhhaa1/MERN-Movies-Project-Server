@@ -1,6 +1,7 @@
 const { User, validate } = require('../models/User');
 const { Auth, validate: validateAuth } = require('../models/Auth');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
     // [POST] /user/signup
@@ -59,9 +60,12 @@ module.exports = {
                     .status(401)
                     .send({ message: 'Invalid Email or password' });
 
-            console.log(user.generateAuthToken());
+            const token = user.generateAuthToken();
 
-            res.status(201).send({ message: 'Login successfully!' });
+            res.status(201).send({
+                message: 'Login successfully!',
+                data: token,
+            });
         } catch (error) {}
     },
 };
