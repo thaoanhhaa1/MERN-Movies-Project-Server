@@ -29,7 +29,7 @@ module.exports = {
             const user = new User({ ...req.body, password: hashPassword });
             await user.save();
 
-            res.status(201).send({ message: 'User created successfully!' });
+            res.status(201).send({ ...req.body, password: hashPassword });
         } catch (error) {
             res.status(500).send({ message: 'Internal Server Error' });
         }
