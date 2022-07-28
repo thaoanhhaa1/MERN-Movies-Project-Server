@@ -4,10 +4,11 @@ module.exports = {
     // [GET] /movie/:id
     movie: async (req, res, next) => {
         const id = req.params.id;
+        const page = req.query.page ?? 1;
 
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
+                `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.THE_MOVIE_DB_API_KEY}&page=${page}`,
             );
             res.json(results.data);
         } catch (error) {
