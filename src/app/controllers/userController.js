@@ -1,7 +1,7 @@
 const { User, validate } = require('../models/User');
-const { Auth, validate: validateAuth } = require('../models/Auth');
+const { validate: validateAuth } = require('../models/Auth');
+const FavoritesMovies = require('../models/FavoritesMovies');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 module.exports = {
     // [POST] /user/signup
@@ -67,5 +67,77 @@ module.exports = {
                 data: token,
             });
         } catch (error) {}
+    },
+
+    encrypt: async (req, res, next) => {},
+
+    // [POST] /user/:userId/favorites-movie?movieId=:movieId
+    favoritesMovies: async (req, res, next) => {
+        const userId = req.params.userId;
+        const movieId = req.query.movieId;
+
+        try {
+            const favoritesMovies = await FavoritesMovies.findOne({ userId });
+
+            if (!favoritesMovies) {
+                const favoritesMovies = new FavoritesMovies({
+                    userId,
+                    list: [movieId],
+                });
+                await favoritesMovies.save();
+            } else {
+                if (favoritesMovies.list.includes(movieId)) {
+                    const list = favoritesMovies.list.filter(
+                        (item) => item !== movieId,
+                    );
+                    await FavoritesMovies.updateOne(
+                        { _id: favoritesMovies._id },
+                        {
+                            list,
+                        },
+                    );
+                } else {
+                    await FavoritesMovies.updateOne(
+                        { _id: favoritesMovies._id },
+                        {
+                            list: [...favoritesMovies.list, movieId],
+                        },
+                    );
+                }
+            }
+
+            return res.json('Successfully!');
+        } catch (error) {
+            return res.status(400).send(error);
+        }
+    },
+
+    // [GET] /user/:userId/favorites-movie?movieId=:movieId
+    favoritesMovie: async (req, res, next) => {
+        const userId = req.params.userId;
+        const movieId = req.query.movieId;
+
+        try {
+            const result = await FavoritesMovies.findOne({
+                userId,
+                list: movieId,
+            });
+            res.json({ favorites: !!result });
+        } catch (error) {
+            res.status(400).send(error);
+        }
+    },
+
+    // [GET] /user/:userId/favorites-movie-list
+    favoritesMovieList: async (req, res, next) => {
+        try {
+            const userId = req.params.userId;
+            const result = await FavoritesMovies.findOne({ userId });
+            const list = Array.isArray(result?.list) ? result?.list : [];
+
+            res.status(200).send({ userId, list });
+        } catch (error) {
+            res.status(400).send(error);
+        }
     },
 };
