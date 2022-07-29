@@ -8,9 +8,11 @@ module.exports = {
 
     // [GET] /search
     search: async (req, res, next) => {
+        const page = req.query.page ?? 1;
+
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/search/movie?api_key=${process.env.THE_MOVIE_DB_API_KEY}&query=${req.query.query}`,
+                `https://api.themoviedb.org/3/search/movie?api_key=${process.env.THE_MOVIE_DB_API_KEY}&query=${req.query.query}&page=${page}`,
             );
             res.json(results.data);
         } catch (error) {
