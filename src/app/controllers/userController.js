@@ -1,6 +1,7 @@
 const { User, validate } = require('../models/User');
 const { validate: validateAuth } = require('../models/Auth');
 const FavoritesMovies = require('../models/FavoritesMovies');
+const FavoritesTV = require('../models/FavoritesTV');
 const bcrypt = require('bcrypt');
 
 module.exports = {
@@ -133,6 +134,76 @@ module.exports = {
         try {
             const userId = req.params.userId;
             const result = await FavoritesMovies.findOne({ userId });
+            const list = Array.isArray(result?.list) ? result?.list : [];
+
+            res.status(200).send({ userId, list });
+        } catch (error) {
+            res.status(400).send(error);
+        }
+    },
+
+    // [POST] /user/:userId/favorites-tv?tvId=:tvId
+    favoritesTV: async (req, res, next) => {
+        const userId = req.params.userId;
+        const tvId = req.query.tvId;
+
+        try {
+            const favoritesTV = await FavoritesTV.findOne({ userId });
+
+            if (!favoritesTV) {
+                const favoritesTV = new FavoritesTV({
+                    userId,
+                    list: [tvId],
+                });
+                await favoritesTV.save();
+            } else {
+                if (favoritesTV.list.includes(tvId)) {
+                    const list = favoritesTV.list.filter(
+                        (item) => item !== tvId,
+                    );
+                    await FavoritesTV.updateOne(
+                        { _id: favoritesTV._id },
+                        {
+                            list,
+                        },
+                    );
+                } else {
+                    await FavoritesTV.updateOne(
+                        { _id: favoritesTV._id },
+                        {
+                            list: [...favoritesTV.list, tvId],
+                        },
+                    );
+                }
+            }
+
+            return res.json('Successfully!');
+        } catch (error) {
+            return res.status(400).send(error);
+        }
+    },
+
+    // [GET] /user/:userId/favorites-tv?tvId=:tvId
+    getFavoritesTV: async (req, res, next) => {
+        const userId = req.params.userId;
+        const tvId = req.query.tvId;
+
+        try {
+            const result = await FavoritesTV.findOne({
+                userId,
+                list: tvId,
+            });
+            res.json({ favorites: !!result });
+        } catch (error) {
+            res.status(400).send(error);
+        }
+    },
+
+    // [GET] /user/:userId/favorites-tv-list
+    favoritesTVList: async (req, res, next) => {
+        try {
+            const userId = req.params.userId;
+            const result = await FavoritesTV.findOne({ userId });
             const list = Array.isArray(result?.list) ? result?.list : [];
 
             res.status(200).send({ userId, list });

@@ -33,4 +33,71 @@ module.exports = {
             next(error);
         }
     },
+
+    // [GET] /tv/type/:slug
+    tvType: async (req, res, next) => {
+        try {
+            const results = await axios.get(
+                `https://api.themoviedb.org/3/tv/${req.params.slug}?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
+            );
+            res.json(results.data);
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    // [GET] /tv/videos?id=:id
+    video: async (req, res, next) => {
+        const id = req.query.id;
+
+        try {
+            const results = await axios.get(
+                `https://api.themoviedb.org/3/tv/${id}/videos?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
+            );
+            res.json(results.data);
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    // [GET] /tv/credits?id=:id
+    credits: async (req, res, next) => {
+        const id = req.query.id;
+
+        try {
+            const results = await axios.get(
+                `https://api.themoviedb.org/3/tv/${id}/credits?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
+            );
+            res.json(results.data);
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    // [GET] /tv/similar?id=:id
+    similar: async (req, res, next) => {
+        const id = req.query.id;
+        try {
+            const results = await axios.get(
+                `https://api.themoviedb.org/3/tv/${id}/similar?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
+            );
+            res.json(results.data);
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    // [GET] /tv/reviews?id=:id
+    reviews: async (req, res, next) => {
+        const id = req.query.id;
+
+        try {
+            const results = await axios.get(
+                `https://api.themoviedb.org/3/tv/${id}/reviews?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
+            );
+            res.json(results.data);
+        } catch (error) {
+            next(error);
+        }
+    },
 };
