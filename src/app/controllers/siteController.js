@@ -12,7 +12,14 @@ module.exports = {
 
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/search/movie?api_key=${process.env.THE_MOVIE_DB_API_KEY}&query=${req.query.query}&page=${page}`,
+                `https://api.themoviedb.org/3/search/multi`,
+                {
+                    params: {
+                        api_key: process.env.THE_MOVIE_DB_API_KEY,
+                        query: req.query.query,
+                        page,
+                    },
+                },
             );
             res.json(results.data);
         } catch (error) {
