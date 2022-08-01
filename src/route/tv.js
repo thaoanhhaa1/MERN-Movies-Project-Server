@@ -3,7 +3,6 @@ const router = express.Router();
 const tvController = require('../app/controllers/tvController');
 
 router.get('/banner', tvController.banner);
-router.get('/videos', tvController.video);
 router.get('/credits', tvController.credits);
 router.get('/similar', tvController.similar);
 router.get('/reviews', tvController.reviews);

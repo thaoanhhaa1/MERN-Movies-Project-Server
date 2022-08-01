@@ -46,20 +46,6 @@ module.exports = {
         }
     },
 
-    // [GET] /tv/videos?id=:id
-    video: async (req, res, next) => {
-        const id = req.query.id;
-
-        try {
-            const results = await axios.get(
-                `https://api.themoviedb.org/3/tv/${id}/videos?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
-            );
-            res.json(results.data);
-        } catch (error) {
-            next(error);
-        }
-    },
-
     // [GET] /tv/credits?id=:id
     credits: async (req, res, next) => {
         const id = req.query.id;
