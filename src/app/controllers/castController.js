@@ -32,6 +32,7 @@ module.exports = {
     tv: async (req, res, next) => {
         const castId = req.params.castId;
         const page = req.query?.page ?? 1;
+        const limit = req.query?.limit;
 
         try {
             const results = await axios.get(
@@ -42,7 +43,7 @@ module.exports = {
                 res.status(400).send({ message: 'CastID Error' });
 
             const result = results.data.cast;
-            const castOnPage = process.env.CAST_ON_PAGE;
+            const castOnPage = limit ?? process.env.CAST_ON_PAGE;
 
             res.json({
                 cast: result.slice((page - 1) * castOnPage, page * castOnPage),
