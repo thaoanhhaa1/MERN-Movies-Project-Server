@@ -3,6 +3,7 @@ const { validate: validateAuth } = require('../models/Auth');
 const FavoritesMovies = require('../models/FavoritesMovies');
 const FavoritesTV = require('../models/FavoritesTV');
 const bcrypt = require('bcrypt');
+const RecentlyViewed = require('../models/RecentlyViewed');
 
 module.exports = {
     // [POST] /user/signup
@@ -69,8 +70,6 @@ module.exports = {
             });
         } catch (error) {}
     },
-
-    encrypt: async (req, res, next) => {},
 
     // [POST] /user/:userId/favorites-movie?movieId=:movieId
     favoritesMovies: async (req, res, next) => {
@@ -209,6 +208,67 @@ module.exports = {
             res.status(200).send({ userId, list });
         } catch (error) {
             res.status(400).send(error);
+        }
+    },
+
+    // [POST] /user/:userId/recently-viewed?type=:type&id=:id
+    postRecentlyViewed: async (req, res, next) => {
+        const userId = req.params.userId;
+        const type = req.body.type;
+        const id = req.body.id;
+
+        try {
+            if (!['movie', 'tv'].includes(type)) {
+                return res
+                    .status(400)
+                    .send({ message: 'Type must be movie or tv' });
+            }
+
+            const recentlyViewed = await RecentlyViewed.findOne({
+                user_id: userId,
+            });
+
+            if (recentlyViewed) {
+                let list = recentlyViewed[type];
+                if (!list.includes(id)) {
+                    if (list.length >= 16) list = list.slice(1);
+
+                    await RecentlyViewed.updateMany(
+                        { user_id: userId },
+                        {
+                            [type]: [...list, id],
+                        },
+                    );
+                }
+            } else {
+                const result = new RecentlyViewed({
+                    user_id: userId,
+                    [type]: [id],
+                });
+
+                result.save();
+            }
+
+            return res.status(200).send('Post Recently Viewed Successfully!!');
+        } catch (error) {
+            return res.status(500).send(error);
+        }
+    },
+
+    // [GET] /user/:userId/recently-viewed?type=:type
+    recentlyViewed: async (req, res, next) => {
+        const userId = req.params.userId;
+        const type = req.query.type;
+
+        try {
+            let list = [];
+            const result = await RecentlyViewed.findOne({ user_id: userId });
+
+            if (result) list = result[type];
+
+            res.send(list);
+        } catch (error) {
+            res.status(500).send(error);
         }
     },
 };
