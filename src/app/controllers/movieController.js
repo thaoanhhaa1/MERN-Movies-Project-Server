@@ -7,10 +7,16 @@ module.exports = {
         const page = req.query.page ?? 1;
 
         try {
-            const results = await axios.get(
-                `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.THE_MOVIE_DB_API_KEY}&page=${page}`,
-            );
-            res.json(results.data);
+            const [results, t] = await Promise.all([
+                await axios.get(
+                    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.THE_MOVIE_DB_API_KEY}&page=${page}`,
+                ), await axios.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.THE_MOVIE_DB_API_KEY}`)
+            ])
+
+            res.json({
+                ...results.data,
+                videoKey: t.data.results.find(item => item.site === 'YouTube')?.key || ''
+            });
         } catch (error) {
             next(error);
         }
