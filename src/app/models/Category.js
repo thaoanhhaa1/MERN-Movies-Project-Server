@@ -8,7 +8,7 @@ const Category = new Schema(
             type: String,
             required: true,
         },
-        slug: {
+        type: {
             type: Array,
             required: true,
         },

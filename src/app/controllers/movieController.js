@@ -9,13 +9,18 @@ module.exports = {
         try {
             const [results, t] = await Promise.all([
                 await axios.get(
-                    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.THE_MOVIE_DB_API_KEY}&page=${page}`,
-                ), await axios.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.THE_MOVIE_DB_API_KEY}`)
-            ])
+                    `${process.env.ENDPOINT}movie/${id}?api_key=${process.env.THE_MOVIE_DB_API_KEY}&page=${page}`,
+                ),
+                await axios.get(
+                    `${process.env.ENDPOINT}movie/${id}/videos?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
+                ),
+            ]);
 
             res.json({
                 ...results.data,
-                videoKey: t.data.results.find(item => item.site === 'YouTube')?.key || ''
+                videoKey:
+                    t.data.results.find((item) => item.site === 'YouTube')
+                        ?.key || '',
             });
         } catch (error) {
             next(error);
@@ -28,7 +33,7 @@ module.exports = {
 
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
+                `${process.env.ENDPOINT}movie/${id}/credits?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
             );
             res.json(results.data);
         } catch (error) {
@@ -42,7 +47,7 @@ module.exports = {
 
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
+                `${process.env.ENDPOINT}movie/${id}/reviews?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
             );
             res.json(results.data);
         } catch (error) {
@@ -55,7 +60,7 @@ module.exports = {
         const id = req.query.id;
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
+                `${process.env.ENDPOINT}movie/${id}/similar?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
             );
             res.json(results.data);
         } catch (error) {

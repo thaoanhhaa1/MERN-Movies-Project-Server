@@ -6,7 +6,7 @@ module.exports = {
         const { category } = req.params;
 
         try {
-            const result = await Category.findOne({ slug: category });
+            const result = await Category.findOne({ type: category });
 
             res.status(200).send(result);
         } catch (error) {

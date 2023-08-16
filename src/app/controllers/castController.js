@@ -8,7 +8,7 @@ module.exports = {
 
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/person/${castId}/movie_credits?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
+                `${process.env.ENDPOINT}person/${castId}/movie_credits?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
             );
 
             if (!results?.data?.cast)
@@ -36,7 +36,7 @@ module.exports = {
 
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/person/${castId}/tv_credits?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
+                `${process.env.ENDPOINT}person/${castId}/tv_credits?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
             );
 
             if (!results?.data?.cast)

@@ -6,7 +6,7 @@ module.exports = {
         const page = req.query.page ?? 1;
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
+                `${process.env.ENDPOINT}tv/popular?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
                 {
                     params: {
                         page,
@@ -26,7 +26,7 @@ module.exports = {
 
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.THE_MOVIE_DB_API_KEY}&page=${page}`,
+                `${process.env.ENDPOINT}tv/${id}?api_key=${process.env.THE_MOVIE_DB_API_KEY}&page=${page}`,
             );
             res.json(results.data);
         } catch (error) {
@@ -38,7 +38,7 @@ module.exports = {
     tvType: async (req, res, next) => {
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/tv/${req.params.slug}?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
+                `${process.env.ENDPOINT}tv/${req.params.slug}?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
             );
             res.json(results.data);
         } catch (error) {
@@ -52,7 +52,7 @@ module.exports = {
 
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/tv/${id}/credits?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
+                `${process.env.ENDPOINT}tv/${id}/credits?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
             );
             res.json(results.data);
         } catch (error) {
@@ -65,7 +65,7 @@ module.exports = {
         const id = req.query.id;
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/tv/${id}/similar?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
+                `${process.env.ENDPOINT}tv/${id}/similar?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
             );
             res.json(results.data);
         } catch (error) {
@@ -79,7 +79,7 @@ module.exports = {
 
         try {
             const results = await axios.get(
-                `https://api.themoviedb.org/3/tv/${id}/reviews?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
+                `${process.env.ENDPOINT}tv/${id}/reviews?api_key=${process.env.THE_MOVIE_DB_API_KEY}`,
             );
             res.json(results.data);
         } catch (error) {
