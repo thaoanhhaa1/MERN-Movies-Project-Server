@@ -1,0 +1,298 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "WMovies - OpenAPI 3.0",
+        "description": "This is a sample Pet Store Server based on the OpenAPI 3.0 specification. You can find out more about Swagger at [https://swagger.io](https://swagger.io). In the third iteration of the pet store, we've switched to the design first approach! You can now help us improve the API whether it's by making changes to the definition itself or to the code. That way, with time, we can improve the API in general, and expose some of the new features in OAS3.\n\nIf you're looking for the Swagger 2.0/OAS 2.0 version of Petstore, then click [here](https://editor.swagger.io/?url=https://petstore.swagger.io/v2/swagger.yaml). Alternatively, you can load via the Edit > Load Petstore OAS 2.0 menu option!\n\nSome useful links:\n- [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)\n- [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "email": "thaoanhhaa1@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "basePath": "/api",
+    "externalDocs": {
+        "description": "Find out more about Swagger",
+        "url": "http://swagger.io"
+    },
+    "servers": [
+        {
+            "url": "https://mern-movies-project-server.vercel.app/api"
+        }
+    ],
+    "tags": [
+        {
+            "name": "cast",
+            "description": "Everything about your Pets",
+            "externalDocs": {
+                "description": "Find out more",
+                "url": "http://swagger.io"
+            }
+        }
+    ],
+    "paths": {
+        "/cast": {
+            "put": {
+                "tags": ["cast"],
+                "summary": "Update an existing pet",
+                "description": "Update an existing pet by Id",
+                "operationId": "updatePet",
+                "requestBody": {
+                    "description": "Update an existent pet in the store",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Pet"
+                            }
+                        },
+                        "application/xml": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Pet"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Pet"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Pet"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Pet"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Pet not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": ["write:pets", "read:pets"]
+                    }
+                ]
+            }
+        },
+        "/cast/{cast_id}/movies": {
+            "get": {
+                "tags": ["cast"],
+                "summary": "Get movies for a specific cast member",
+                "description": "UGet movies for a specific cast member by cast_id",
+                "parameters": [
+                    {
+                        "name": "cast_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "description": "ID of the cast member"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "Page number (default: 1)"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "cast": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/CastMovie"
+                                    }
+                                },
+                                "page": {
+                                    "type": "integer"
+                                },
+                                "total_pages": {
+                                    "type": "integer"
+                                },
+                                "total_results": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/cast/{castId}/tv": {
+            "get": {
+                "tags": ["cast"],
+                "summary": "Get TV shows for a specific cast member",
+                "parameters": [
+                    {
+                        "name": "castId",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "description": "ID of the cast member"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "Page number (default: 1)"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "Number of results per page (optional)"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "cast": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/CastTV"
+                                    }
+                                },
+                                "page": {
+                                    "type": "integer"
+                                },
+                                "total_pages": {
+                                    "type": "integer"
+                                },
+                                "total_results": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Order": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 10
+                    },
+                    "petId": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 198772
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 7
+                    },
+                    "shipDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Order Status",
+                        "example": "approved",
+                        "enum": ["placed", "approved", "delivered"]
+                    },
+                    "complete": {
+                        "type": "boolean"
+                    }
+                },
+                "xml": {
+                    "name": "order"
+                }
+            }
+        },
+        "requestBodies": {
+            "Pet": {
+                "description": "Pet object that needs to be added to the store",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Pet"
+                        }
+                    },
+                    "application/xml": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Pet"
+                        }
+                    }
+                }
+            },
+            "UserArray": {
+                "description": "List of user object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "petstore_auth": {
+                "type": "oauth2",
+                "flows": {
+                    "implicit": {
+                        "authorizationUrl": "https://petstore3.swagger.io/oauth/authorize",
+                        "scopes": {
+                            "write:pets": "modify pets in your account",
+                            "read:pets": "read your pets"
+                        }
+                    }
+                }
+            },
+            "api_key": {
+                "type": "apiKey",
+                "name": "api_key",
+                "in": "header"
+            }
+        }
+    }
+}
