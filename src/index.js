@@ -21,20 +21,10 @@ app.use(bodyParser.json());
 app.use('/api', route);
 
 // Configure swagger docs
-const options = {
-    swaggerDefinition: {
-        info: {
-            title: 'WMovies API',
-            version: '1.0.0',
-            description: 'My API for doing cool stuff!',
-        },
-    },
-    apis: [path.join(__dirname, '/route/*.js')],
-};
+const expressOasGenerator = require('express-oas-generator');
 
-const swaggerSpecs = swaggerJsdoc(options);
+expressOasGenerator.init(app, {});
 
-app.use('/api/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 // app.use(errorMiddleware);
 
 // Enabling CORS
