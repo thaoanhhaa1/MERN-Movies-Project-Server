@@ -5,12 +5,15 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const db = require('./config/db');
 const route = require('./route');
-const swaggerJsdoc = require('swagger-jsdoc');
+// const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 // const errorMiddleware = require('./app/middlewares/errorMiddleware');
+const docs = require('../docs/apidoc');
 
 const port = process.env.PORT || 5000;
 const app = express();
+
+app.use('/documentation', swaggerUi.serve, swaggerUi.setup(docs));
 
 db.connect();
 
@@ -32,9 +35,9 @@ const options = {
     apis: [path.join(__dirname, '/route/*.js')],
 };
 
-const swaggerSpecs = swaggerJsdoc(options);
+// const swaggerSpecs = swaggerJsdoc(options);
 
-app.use('/api/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+// app.use('/api/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 // app.use(errorMiddleware);
 
 // Enabling CORS
